@@ -19,7 +19,16 @@
 			$this->corps ($corps);
 		}
 		
-		public function create () {}
+		public function create () {
+			$sql = "CREATE TABLE IF NOT EXISTS `Ticket` (
+						`idTicket` INT(11) PRIMARY KEY AUTO_INCREMENT,
+						`titre` VARCHAR(255) NOT NULL,
+						`objet` VARCHAR(255) NOT NULL,
+						`etat` INT(1) NOT NULL,
+						`importance` VARCHAR(255) NOT NULL,
+						`corps` VARCHAR(1024) NOT NULL,
+					);";
+		}
 		
 		public static function update () {}
 		

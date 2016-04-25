@@ -12,7 +12,14 @@
 			idAgence ($idAgence);
 		}
 		
-		public function create () {}
+		public function create () {
+			$sql = "CREATE TABLE IF NOT EXISTS `Service` (
+						`idService` INT(11) PRIMARY KEY AUTO_INCREMENT,
+						`nom` VARCHAR(50) NOT NULL,
+						`idAgence` INT(11) NOT NULL,
+						FOREIGN KEY `idAgence` REFERENCES `Agence`(`idAgence`)
+					);";
+		}
 		
 		public static function update () {}
 		

@@ -12,7 +12,13 @@
 			adresse ($adresse);
 		}
 		
-		public function create () {}
+		public function create () {
+			$sql = "CREATE TABLE IF NOT EXISTS `Agence` (
+						`idAgence` INT(11) PRIMARY KEY AUTO_INCREMENT,
+						`nom` VARCHAR(50) NOT NULL,
+						`adresse` VARCHAR(100) NOT NULL
+					);";
+		}
 		
 		public static function update () {}
 		

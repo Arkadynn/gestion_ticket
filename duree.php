@@ -7,13 +7,25 @@
 			id ($idTicket);
 		}
 		
-		public function create () {}
+		public function create () {
+			$sql = "CREATE TABLE IF NOT EXISTS `Duree` 
+				   (
+				   		`debut` DATETIME,
+				   		`fin` DATETIME,
+				   		`idTicket` INT(11),
+				   		PRIMARY KEY (`debut`, `idTicket`),
+				   		FOREIGN KEY (`idTicket`) REFERENCES `Ticket`(`idTicket`)
+				   );";
+
+		}
 		
 		public static function update () {}
 		
 		public static function insert () {}
 		
-		public static function delete () {}
+		public static function delete () {
+			$sql = "DROP TABLE `Duree`;"
+		}
 		
 		public static function listAll () {
 			$sql = "SELECT * FROM `Duree`;";
