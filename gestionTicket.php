@@ -18,23 +18,19 @@
 		*/
 		public function GestionTicket($dbi)	{
 
-			private $attr__connection = null;
+			self::$attr__connection = null;
 
 			list($host, $user, $password, $dbname) = explode('|', $dbi);
 
-
-			echo "mysql:host=$host;";
-
+			// Connect to mysql server
 			self::$attr__connection = new PDO("mysql:host=$host;", $user, $password);
 
+			// create database in case it do not exists
 			$sql = "CREATE DATABASE IF NOT EXISTS `$dbname`;";
 			self::$attr__connection->exec ($sql);
 
+			// connect to database
 			self::$attr__connection = new PDO("mysql:host=$host;dbname=$dbname", $user, $password);
-
-			$conn = self::$attr__connection;
-
-
 
 			Agence::create ();
 			Service::create ();
