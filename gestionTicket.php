@@ -8,7 +8,7 @@
 
 	class GestionTicket {
 
-		private $attr__connection;
+		public static $attr__connection;
 		private $attr__DBPrefix;
 
 		/*
@@ -18,17 +18,43 @@
 		*/
 		public function GestionTicket($dbi)	{
 
-			$attr__connection = null;
+			private $attr__connection = null;
 
-			list($host, $user, $password, $dbprefix, $dbname) = explode('|', $dbi);
+			list($host, $user, $password, $dbname) = explode('|', $dbi);
 
-			$sql = "CREATE DATABASE IF NOT EXISTS `".$dbprefix."GestionTicket`";
+			echo "mysql:host=$host;";
 
-			Agence.create ();
-			Service.create ();
-			Utilisateur.create ();
-			ticket.create ();
-			duree.create ();
+			self::$attr__connection = new PDO("mysql:host=$host;", $user, $password);
+
+			$sql = "CREATE DATABASE IF NOT EXISTS `$dbname`;";
+			self::$attr__connection->exec ($sql);
+
+			self::$attr__connection = new PDO("mysql:host=$host;dbname=$dbname", $user, $password);
+
+			$conn = self::$attr__connection;
+
+
+
+			Agence::create ();
+			Service::create ();
+			Utilisateur::create ();
+			Ticket::create ();
+			Duree::create ();
+		}
+
+		public static function exec($sql = null) {
+			if (isset($sql)) {
+				$sql = PDO::quote ($sql);
+				return self::$attr__connection->exec($sql);
+			}
+			return -1;
+		}
+
+		public static function fetchAll ($sql = null) {
+			if (isset($sql)) {
+				$sql = PDO::quote ($sql);
+				
+			}
 		}
 	}
 ?>

@@ -7,18 +7,19 @@
 			$this->attr__nom = "";
 			$this->attr__idAgence = 0;
 
-			idService ($idService);
-			nom ($nom);
-			idAgence ($idAgence);
+			$this->idService ($idService);
+			$this->nom ($nom);
+			$this->idAgence ($idAgence);
 		}
 		
-		public function create () {
+		public static function create () {
 			$sql = "CREATE TABLE IF NOT EXISTS `Service` (
 						`idService` INT(11) PRIMARY KEY AUTO_INCREMENT,
 						`nom` VARCHAR(50) NOT NULL,
 						`idAgence` INT(11) NOT NULL,
-						FOREIGN KEY `idAgence` REFERENCES `Agence`(`idAgence`)
+						FOREIGN KEY (`idAgence`) REFERENCES `Agence`(`idAgence`)
 					);";
+			return $sql;
 		}
 		
 		public static function update () {}
@@ -52,7 +53,7 @@
 		{
 			if (isset($val))
 				if (is_int($val)) {
-					if (val >= 0)
+					if ($val >= 0)
 						$this->attr__idService = $val;
 				}
 			return $this->attr__idService;

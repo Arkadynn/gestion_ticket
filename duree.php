@@ -2,12 +2,16 @@
 	class Duree {
 		public function Duree ($idTicket = 0, $debut = "", $fin = "") 
 		{
-			debut ($debut);
-			fin ($fin);
-			id ($idTicket);
+			$this->attr__debut = "";
+			$this->attr__fin = "";
+			$this->attr__idTicket = 0;
+
+			$this->debut ($debut);
+			$this->fin ($fin);
+			$this->id ($idTicket);
 		}
 		
-		public function create () {
+		public static function create () {
 			$sql = "CREATE TABLE IF NOT EXISTS `Duree` 
 				   (
 				   		`debut` DATETIME,
@@ -16,7 +20,7 @@
 				   		PRIMARY KEY (`debut`, `idTicket`),
 				   		FOREIGN KEY (`idTicket`) REFERENCES `Ticket`(`idTicket`)
 				   );";
-
+			return $sql;
 		}
 		
 		public static function update () {}
@@ -24,7 +28,7 @@
 		public static function insert () {}
 		
 		public static function delete () {
-			$sql = "DROP TABLE `Duree`;"
+			$sql = "DROP TABLE `Duree`;";
 		}
 		
 		public static function listAll () {
@@ -32,11 +36,11 @@
 			// TODO
 		}
 		
-		public static function getWhere ($debut = null $fin = null $id = null) {
+		public static function getWhere ($debut = null, $fin = null, $id = null) {
 			// TODO	
 		}
 		
-		public static function searchWhere ($debut = null $fin = null $id = null) {
+		public static function searchWhere ($debut = null, $fin = null, $id = null) {
 			// TODO	
 		}
 
