@@ -22,6 +22,7 @@
 
 			list($host, $user, $password, $dbname) = explode('|', $dbi);
 
+
 			echo "mysql:host=$host;";
 
 			self::$attr__connection = new PDO("mysql:host=$host;", $user, $password);
@@ -53,7 +54,7 @@
 		public static function fetchAll ($sql = null) {
 			if (isset($sql)) {
 				$sql = PDO::quote ($sql);
-				
+
 			}
 		}
 	}
