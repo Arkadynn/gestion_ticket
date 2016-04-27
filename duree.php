@@ -20,7 +20,7 @@
 				   		PRIMARY KEY (`debut`, `idTicket`),
 				   		FOREIGN KEY (`idTicket`) REFERENCES `Ticket`(`idTicket`)
 				   );";
-			return $sql;
+			return GestionTicket::exec ($sql);
 		}
 		
 		public static function update () {}

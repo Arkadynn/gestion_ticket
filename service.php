@@ -19,7 +19,7 @@
 						`idAgence` INT(11) NOT NULL,
 						FOREIGN KEY (`idAgence`) REFERENCES `Agence`(`idAgence`)
 					);";
-			return $sql;
+			return GestionTicket::exec ($sql);
 		}
 		
 		public static function update () {}

@@ -18,7 +18,7 @@
 		*/
 		public function GestionTicket($dbi)	{
 
-			self::$attr__connection = null;
+			private self::$attr__connection = null;
 
 			list($host, $user, $password, $dbname) = explode('|', $dbi);
 
