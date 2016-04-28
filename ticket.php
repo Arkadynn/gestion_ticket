@@ -28,7 +28,7 @@
 			$this->idUser($idUser);
 		}
 		
-		//* TODO ==> Move it
+		//* 		TODO ==> Move it
 		public static function create () {
 			$sql = "CREATE TABLE IF NOT EXISTS `Ticket` (
 						`id` INT(11) PRIMARY KEY AUTO_INCREMENT,
@@ -83,12 +83,17 @@
 			return GestionTicket::fetchAll ($sql);
 		}
 		
-		public static function getWhere ($idTicket = null, $titre = null, $objet = null, $etat = null, $importance = null, $corps = null, $tempsPref = null, $idUser = null) {
-			// TODO	
+		public static function getWhere ($id = null) {
+			if (isset($id)) {
+				$sql = "SELECT * FROM `Ticket` WHERE `id` = $id;";
+				$rows = GestionTicket::fetchAll ($sql);
+				$row = $rows[0];
+				return new Ticket ($row["id"], $row["titre"], $row["objet"], $row["importance"], $row["etat"], $row["corps"], $row["tempsRef"], $row["idUser"]);
+			}
 		}
 		
 		public static function searchWhere ($idTicket = null, $titre = null, $objet = null, $etat = null, $importance = null, $corps = null, $tempsPref = null, $idUser = null) {
-			// TODO	
+			// TODO
 		}
 		
 		public function getTicketsFromUser ($userID = null) {
