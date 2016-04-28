@@ -1,9 +1,9 @@
 <?php
-	include ('agence.php');
-	include ('duree.php');
-	include ('service.php');
-	include ('ticket.php');
-	include ('utilisateur.php');
+	require_once ('agence.php');
+	require_once ('duree.php');
+	require_once ('service.php');
+	require_once ('ticket.php');
+	require_once ('utilisateur.php');
 
 
 	class GestionTicket {

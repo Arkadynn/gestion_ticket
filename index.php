@@ -4,7 +4,7 @@
 <body>
 	<?php
 		echo "<p>All Good ?</p>";
-		include ("gestionTicket.php");
+		require_once ("gestionTicket.php");
 		new GestionTicket ("localhost|root||freyssinet_gestion_ticket");
 		new Agence ();
 		new Service ();

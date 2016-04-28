@@ -23,11 +23,11 @@
 			return GestionTicket::exec ($sql);
 		}
 		
-		public static function update () {}
+		public function update () {}
 		
-		public static function insert () {}
+		public function insert () {}
 		
-		public static function delete () {
+		public function delete () {
 			$sql = "DROP TABLE `Duree`;";
 		}
 		

@@ -9,7 +9,7 @@
 		
 		public function Ticket ($idTicket = 0, $titre = "", $objet = "", $importance = 0, $corps = "", $tempsPref = 0, $idUser = 0) {
 
-			$this->attr__idTicket = 0;
+			$this->attr__id = 0;
 			$this->attr__titre = "";
 			$this->attr__objet = "";
 			$this->attr__importance = 0;
@@ -18,7 +18,7 @@
 			$this->attr__tempsPref = 0;
 			$this->attr__idUser = 0;
 
-			$this->idTicket ($idTicket);
+			$this->id ($id);
 			$this->titre ($titre);
 			$this->objet ($objet);
 			$this->etat (self::ETAT_CREE);
@@ -28,9 +28,10 @@
 			$this->idUser($idUser);
 		}
 		
+		//* TODO ==> Move it
 		public static function create () {
 			$sql = "CREATE TABLE IF NOT EXISTS `Ticket` (
-						`idTicket` INT(11) PRIMARY KEY AUTO_INCREMENT,
+						`id` INT(11) PRIMARY KEY AUTO_INCREMENT,
 						`titre` VARCHAR(255) NOT NULL,
 						`objet` VARCHAR(255) NOT NULL,
 						`etat` INT(2) NOT NULL,
@@ -42,11 +43,10 @@
 					);";
 			return GestionTicket::exec ($sql);
 		}
-
-		public static function drop () {}
+		//*/
 		
 		public function insert () {
-			$idTicket = $this->attr__idTicket;
+			$id = $this->attr__id;
 			$titre = $this->attr__titre;
 			$objet = $this->attr__objet;
 			$etat = $this->attr__etat;
@@ -59,9 +59,24 @@
 			GestionTicket::exec($sql);
 		}
 		
-		public function update () {}
+		public function update () {
+			$id = $this->attr__id;
+			$titre = $this->attr__titre;
+			$objet = $this->attr__objet;
+			$etat = $this->attr__etat;
+			$importance = $this->attr__importance;
+			$corps = $this->attr__corps;
+			$tempsPref = $this->attr__tempsPref;
+			$idUser = $this->attr__idUser;
+			$sql = "UPDATE `Ticket` SET `titre`=$titre, `objet`=$objet, `etat`=$etat, `importance`=$importance, `corps`=$corps, `tempsPref`=$tempsPref, `idUser`=$idUser WHERE `id` = $id";
+			GestionTicket::exec($sql);
+		}
 		
-		public function delete () {}
+		public function delete () {
+			$id = $this->attr__id;
+			$sql = "DELETE FROM `Ticket` WHERE `idTicket` = $id;";
+			GestionTicket::exec($sql);
+		}
 		
 		public static function listAll () {
 			$sql = "SELECT * FROM `Ticket`;";
