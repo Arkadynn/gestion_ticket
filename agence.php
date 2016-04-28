@@ -1,8 +1,7 @@
 <?php
 	class Agence {
 
-		public function Agence($id = 0, $nom = "", $adresse = "")
-		{
+		public function Agence($id = 0, $nom = "", $adresse = "") {
 			$this->attr__id = 0;
 			$this->attr__nom = "";
 			$this->attr__adresse = "";
@@ -12,20 +11,41 @@
 			$this->adresse ($adresse);
 		}
 		
+		//* TODO Move it
 		public static function create () {
 			$sql = "CREATE TABLE IF NOT EXISTS `Agence` (
-						`idAgence` INT(11) PRIMARY KEY AUTO_INCREMENT,
+						`id` INT(11) PRIMARY KEY AUTO_INCREMENT,
 						`nom` VARCHAR(50) NOT NULL,
 						`adresse` VARCHAR(100) NOT NULL
 					);";
 			return GestionTicket::exec ($sql);
 		}
+		//*/
 		
-		public static function update () {}
+		public function insert () {
+			$id = $this->attr__id;
+			$nom = $this->attr__nom;
+			$adresse = $this->attr__adresse;
+
+			$sql = "INSERT INTO `Agence` (`id`, `nom`, `adresse`) VALUES ('$id', '$nom', '$adresse');";
+			return GestionTicket::exec ($sql);
+		}
 		
-		public static function insert () {}
+		public function update () {
+			$id = $this->attr__id;
+			$nom = $this->attr__nom;
+			$adresse = $this->attr__adresse;
+
+			$sql = "UPDATE `Agence` SET `nom`=$nom, `adresse`=$adresse WHERE `id`=$id;";
+			return GestionTicket::exec ($sql);
+		}
 		
-		public static function delete () {}
+		public function delete () {
+			$id = $this->attr__id;
+
+			$sql = "DELETE FROM `Agence` WHERE `id` = $id;";
+			return GestionTicket::exec ($sql);
+		}
 		
 		public static function listAll () {
 			$sql = "SELECT * FROM `Service`;";
@@ -33,7 +53,34 @@
 		}
 		
 		public static function getWhere ($id = null, $nom = null, $adresse = null) {
-			// TODO	
+			$isFirst = true;
+			$sql = "SELECT * FROM `Agence` WHERE ";
+
+			if (isset($id)) {
+				$sql = $sql."`id` = $id";
+				$isFirst = false;
+			}
+
+			if (isset($nom)) {
+				if ($isFirst)
+					$sql = $sql." AND ";
+				$sql = $sql."`nom` = $nom";
+				$isFirst = false;
+			}
+
+			if (isset($adresse)) {
+				if ($isFirst)
+					$sql = $sql." AND ";
+				$sql = $sql."`adresse` = $adresse";
+				$isFirst = false;
+			}
+
+			if (isFirst) 
+				return null;
+
+			$rows = GestionTicket::fetchAll ($sql);
+			$row = $rows[0];
+			return new Ticket ($row["id"], $row["nom"], $row["adresse"]);
 		}
 		
 		public static function searchWhere ($id = null, $nom = null, $adresse = null) {
