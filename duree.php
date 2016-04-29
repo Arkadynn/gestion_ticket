@@ -10,18 +10,6 @@
 			$this->id ($idTicket);
 		}
 		
-		public static function create () {
-			$sql = "CREATE TABLE IF NOT EXISTS `Duree` 
-				   (
-				   		`debut` DATETIME,
-				   		`fin` DATETIME,
-				   		`idTicket` INT(11),
-				   		PRIMARY KEY (`debut`, `idTicket`),
-				   		FOREIGN KEY (`idTicket`) REFERENCES `Ticket`(`id`)
-				   );";
-			return GestionTicket::exec ($sql);
-		}
-		
 		public function insert () {
 			$debut = $this->attr__debut;
 			$fin = $this->attr__fin;

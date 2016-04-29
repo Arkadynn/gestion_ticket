@@ -28,23 +28,6 @@
 			$this->idUser($idUser);
 		}
 		
-		//* 		TODO ==> Move it
-		public static function create () {
-			$sql = "CREATE TABLE IF NOT EXISTS `Ticket` (
-						`id` INT(11) PRIMARY KEY AUTO_INCREMENT,
-						`titre` VARCHAR(255) NOT NULL,
-						`objet` VARCHAR(255) NOT NULL,
-						`etat` INT(2) NOT NULL,
-						`importance` INT(2) NOT NULL,
-						`corps` VARCHAR(1024) NOT NULL,
-						`tempsPref` INT (11) NOT NULL,
-						`idUser` INT (11) NOT NULL,
-						FOREIGN KEY (`idUser`) REFERENCES `Utilisateur`(`id`)
-					);";
-			return GestionTicket::exec ($sql);
-		}
-		//*/
-		
 		public function insert () {
 			$id = $this->attr__id;
 			$titre = $this->attr__titre;

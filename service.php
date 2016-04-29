@@ -10,18 +10,6 @@
 			$this->nom ($nom);
 			$this->idAgence ($idAgence);
 		}
-		
-		//*			TODO => Move it
-		public static function create () {
-			$sql = "CREATE TABLE IF NOT EXISTS `Service` (
-						`id` INT(11) PRIMARY KEY AUTO_INCREMENT,
-						`nom` VARCHAR(50) NOT NULL,
-						`idAgence` INT(11) NOT NULL,
-						FOREIGN KEY (`idAgence`) REFERENCES `Agence`(`idAgence`)
-					);";
-			return GestionTicket::exec ($sql);
-		}
-		//*/
 
 		public function insert () {
 			$id = $this->attr__id;

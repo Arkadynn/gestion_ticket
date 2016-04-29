@@ -9,7 +9,6 @@
 	class GestionTicket {
 
 		public static $attr__connection;
-		private $attr__DBPrefix;
 
 		/*
 		 *	Initialisation du module de gestion de ticket : 
@@ -32,11 +31,46 @@
 			// connect to database
 			self::$attr__connection = new PDO("mysql:host=$host;dbname=$dbname", $user, $password);
 
-			Agence::create ();
-			Service::create ();
-			Utilisateur::create ();
-			Ticket::create ();
-			Duree::create ();
+			$sql = "CREATE TABLE IF NOT EXISTS `Agence` (
+						`id` INT(11) PRIMARY KEY AUTO_INCREMENT,
+						`nom` VARCHAR(50) NOT NULL,
+						`adresse` VARCHAR(100) NOT NULL
+					);";
+			GestionTicket::exec ($sql)
+
+			$sql = "CREATE TABLE IF NOT EXISTS `Service` (
+						`id` INT(11) PRIMARY KEY AUTO_INCREMENT,
+						`nom` VARCHAR(50) NOT NULL,
+						`idAgence` INT(11) NOT NULL,
+						FOREIGN KEY (`idAgence`) REFERENCES `Agence`(`idAgence`)
+					);";
+			GestionTicket::exec ($sql);
+
+			$sql = "CREATE TABLE IF NOT EXISTS `Utilisateur` (id INT(11) PRIMARY KEY AUTO_INCREMENT);";
+			GestionTicket::exec ($sql);
+
+			$sql = "CREATE TABLE IF NOT EXISTS `Ticket` (
+						`id` INT(11) PRIMARY KEY AUTO_INCREMENT,
+						`titre` VARCHAR(255) NOT NULL,
+						`objet` VARCHAR(255) NOT NULL,
+						`etat` INT(2) NOT NULL,
+						`importance` INT(2) NOT NULL,
+						`corps` VARCHAR(1024) NOT NULL,
+						`tempsPref` INT (11) NOT NULL,
+						`idUser` INT (11) NOT NULL,
+						FOREIGN KEY (`idUser`) REFERENCES `Utilisateur`(`id`)
+					);";
+			GestionTicket::exec ($sql);
+
+			$sql = "CREATE TABLE IF NOT EXISTS `Duree` 
+				   (
+				   		`debut` DATETIME,
+				   		`fin` DATETIME,
+				   		`idTicket` INT(11),
+				   		PRIMARY KEY (`debut`, `idTicket`),
+				   		FOREIGN KEY (`idTicket`) REFERENCES `Ticket`(`id`)
+				   );";
+			GestionTicket::exec ($sql);
 		}
 
 		public static function exec($sql = null) {

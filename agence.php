@@ -11,17 +11,6 @@
 			$this->adresse ($adresse);
 		}
 		
-		//* TODO Move it
-		public static function create () {
-			$sql = "CREATE TABLE IF NOT EXISTS `Agence` (
-						`id` INT(11) PRIMARY KEY AUTO_INCREMENT,
-						`nom` VARCHAR(50) NOT NULL,
-						`adresse` VARCHAR(100) NOT NULL
-					);";
-			return GestionTicket::exec ($sql);
-		}
-		//*/
-		
 		public function insert () {
 			$id = $this->attr__id;
 			$nom = $this->attr__nom;
