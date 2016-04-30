@@ -1,15 +1,11 @@
 <html>
 <head>
+	<data-author>Quentin Deputier</data-author>
 </head>
 <body>
 	<?php
 		echo "<p>All Good ?</p>";
-		require_once ("gestionTicket.php");
-		new GestionTicket ("localhost|root||freyssinet_gestion_ticket");
-		new Agence ();
-		new Service ();
-		new Ticket ();
-		new Duree ();
+		require_once ("tests.php");
 		echo "<p>Yup !</p>";
 	?>
 </body>

@@ -1,4 +1,5 @@
 <?php
+	// @author=Quentin aka Arkadynn Deputier
 	class Service {
 
 		public function Service ($id = 0, $nom = "", $idAgence = 0) {
@@ -12,25 +13,28 @@
 		}
 
 		public function insert () {
-			$id = $this->attr__id;
-			$nom = $this->attr__nom;
-			$idAgence = $this->attr__idAgence;
+			$pdo = GestionTicket::$attr__connection;
+			$id = $this->id();
+			$nom = $this->nom();
+			$idAgence = $this->idAgence();
 
 			$sql = "INSERT INTO `Service` (`id`, `nom`, `idAgence`) VALUES ('$id', '$nom', '$idAgence');";
 			return GestionTicket::exec ($sql);
 		}
 
 		public function update () {
-			$id = $this->attr__id;
-			$nom = $this->attr__nom;
-			$idAgence = $this->attr__idAgence;
+			$pdo = GestionTicket::$attr__connection;
+			$id = $this->id();
+			$nom = $this->nom();
+			$idAgence = $this->idAgence();
 
 			$sql = "UPDATE `Service` SET `nom`='$nom', `idAgence`='$idAgence' WHERE `id`=$id;";
 			return GestionTicket::exec ($sql);
 		}
 		
 		public function delete () {
-			$id = $this->attr__id;
+			$pdo = GestionTicket::$attr__connection;
+			$id = $this->id();
 			$sql = "DELETE FROM `Service` WHERE `id` = '$id';";
 			return GestionTicket::exec ($sql);
 		}
@@ -44,13 +48,15 @@
 			$isFirstArg = true;
 			$sql = "SELECT * FROM `Service` WHERE ";
 			if (isset($id)) {
+				$id = $this->id();
 				$sql = $sql."`id` = '$id'";
 				$isFirstArg = false;
 			}
 
 			if (isset($nom)) {
+				$nom = $this->nom();
 				if (!$isFirstArg) {
-					$sql = $sql." AND "
+					$sql = $sql." AND ";
 				}
 
 				$sql = $sql."`nom` = '$nom';";
@@ -84,7 +90,7 @@
 			if (isset($val))
 				if (is_int($val)) {
 					if ($val >= 0)
-						$this->attr__id = $val;
+						$this->attr__id = GestionTicket::quote($val);
 				}
 			return $this->attr__id;
 		}
@@ -92,7 +98,7 @@
 		public function nom ($val = null) {
 			if (isset($val))
 				if (is_string($val)) {
-					$this->attr__nom = $val;
+					$this->attr__nom = GestionTicket::quote($val);
 				}
 			return $this->attr__nom;
 		}
@@ -101,7 +107,7 @@
 			if (isset($val))
 				if (is_int($val)) {
 					if ($val >= 0) {
-						$this->attr__idAgence = $val;
+						$this->attr__idAgence = GestionTicket::quote($val);
 					}
 				}
 			return $this->attr__idAgence;
