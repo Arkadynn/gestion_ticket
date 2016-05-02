@@ -72,17 +72,126 @@
 		public static function getWhere ($id = null) {
 			$pdo = GestionTicket::$attr__connection;
 			if (isset($id)) {
-				$id = GestionTicket::quote($id);
-				$sql = "SELECT * FROM `Ticket` WHERE `id` = $id;";
+				if (is_int($id) && $id > 0) {
+					$id = GestionTicket::quote($id);
+					$sql = "SELECT * FROM `Ticket` WHERE `id` = $id;";
 
-				$row = GestionTicket::fetch($sql);
+					$row = GestionTicket::fetch($sql);
 
-				return new Ticket ($row["id"], $row["titre"], $row["objet"], $row["importance"], $row["etat"], $row["corps"], $row["tempsRef"], $row["idUser"]);
+					return new Ticket ($row["id"], $row["titre"], $row["objet"], $row["importance"], $row["etat"], $row["corps"], $row["tempsRef"], $row["idUser"]);
+				}
 			}
+			return null;
 		}
 		
 		public static function searchWhere ($id = null, $titre = null, $objet = null, $etat = null, $importance = null, $corps = null, $tempsPref = null, $idUser = null) {
-			// TODO
+			$isFirst = true;
+			$sql = "SELECT * FROM `Service` WHERE ";
+
+			if (isset($id)) {
+				if (is_int($id) && $id > 0) {
+					$id = GestionTicket::quote($id);
+					$sql = $sql."`id` = $id";
+					$isFirst = false;
+				}
+			}
+
+			if (isset($titre)) {
+				if (is_string($titre)) {
+					$titre = GestionTicket::quote($titre);
+					if (!$isFirst) {
+						$sql = $sql." AND ";
+					}
+
+					$sql = $sql."`titre` = $titre;";
+					$isFirst = false;
+				}
+			}
+
+			if (isset($objet)) {
+				if (is_string($objet)) {
+					$objet = GestionTicket::quote($objet);
+					if (!$isFirst) {
+						$sql = $sql." AND ";
+					}
+
+					$sql = $sql."`objet` = $objet;";
+					$isFirst = false;
+				}
+			}
+
+			if (isset($etat)) {
+				if (is_int($etat) && $etat != self::ETAT_INVALIDE) {
+					$etat = GestionTicket::quote($etat);
+					if (!$isFirst) {
+						$sql = $sql." AND ";
+					}
+					
+					$sql = $sql."`etat` = $etat";
+					$isFirst = false;
+				}
+			}
+
+			if (isset($importance)) {
+				if (is_int($importance) && $importance > 0) {
+					$importance = GestionTicket::quote($importance);
+					if (!$isFirst) {
+						$sql = $sql." AND ";
+					}
+
+					$sql = $sql."`importance` = $importance";
+					$isFirst = false;
+				}
+			}
+
+			if (isset($corps)) {
+				if (is_string($corps)) {
+					$corps = GestionTicket::quote($corps);
+					if (!$isFirst) {
+						$sql = $sql." AND ";
+					}
+
+					$sql = $sql."`corps` = $corps;";
+					$isFirst = false;
+				}
+			}
+
+			if (isset($tempsPref)) {
+				if (is_string($tempsPref)) {
+					$tempsPref = GestionTicket::quote($tempsPref);
+					if (!$isFirst) {
+						$sql = $sql." AND ";
+					}
+
+					$sql = $sql."`tempsPref` = $tempsPref;";
+					$isFirst = false;
+				}
+			}
+
+			if (isset($idUser)) {
+				if (is_int($idUser) && $idUser > 0) {
+					$idUser = GestionTicket::quote($idUser);
+					if (!$isFirst) {
+						$sql = $sql." AND ";
+					}
+
+					$sql = $sql."`idUser` = $idUser";
+					$isFirst = false;
+				}
+			}
+
+			if ($isFirst) 
+				return null;
+
+			$rows = GestionTicket::fetchAll($sql);
+
+			$objects = array();
+
+			foreach ($rows as $row) {
+				array_push($objects, new Agence($row["id"], $row["nom"], $row["idAgence"]));
+			}
+
+			return $objects;
 		}
 		
 		public function getTicketsFromUser ($userID = null) {

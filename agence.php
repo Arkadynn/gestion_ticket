@@ -32,7 +32,6 @@
 		
 		public function delete () {
 			$id = $this->id();
-
 			$sql = "DELETE FROM `Agence` WHERE `id` = $id;";
 			return GestionTicket::exec ($sql);
 		}
@@ -47,37 +46,75 @@
 			$sql = "SELECT * FROM `Agence` WHERE ";
 
 			if (isset($id)) {
-				$id = GestionTicket::quote($id);
-				$sql = $sql."`id` = $id";
-				$isFirst = false;
+				if (is_int($id) && $id > 0) {
+					$id = GestionTicket::quote($id);
+					$sql = $sql."`id` = $id";
+					$isFirst = false;
+				}
 			}
 
 			if (isset($nom)) {
-				$nom = GestionTicket::quote($nom);
-				if ($isFirst)
-					$sql = $sql." AND ";
-				$sql = $sql."`nom` = $nom";
-				$isFirst = false;
-			}
-
-			if (isset($adresse)) {
-				$adresse = GestionTicket::quote($adresse);
-				if ($isFirst)
-					$sql = $sql." AND ";
-				$sql = $sql."`adresse` = $adresse";
-				$isFirst = false;
+				if (is_string($nom)) {
+					$nom = GestionTicket::quote($nom);
+					if ($isFirst)
+						$sql = $sql." AND ";
+					$sql = $sql."`nom` = $nom";
+					$isFirst = false;
+				}
 			}
 
 			if (isFirst) 
 				return null;
 
 			$row = GestionTicket::fetch($sql);
-			
+
 			return new Ticket ($row["id"], $row["nom"], $row["adresse"]);
 		}
 		
 		public static function searchWhere ($id = null, $nom = null, $adresse = null) {
-			// TODO	
+			$isFirst = true;
+			$sql = "SELECT * FROM `Agence` WHERE ";
+
+			if (isset($id)) {
+				if (is_int($id) && $id > 0) {
+					$id = GestionTicket::quote($id);
+					$sql = $sql."`id` = $id";
+					$isFirst = false;
+				}
+			}
+
+			if (isset($nom)) {
+				if (is_string($nom)) {
+					$nom = GestionTicket::quote($nom);
+					if ($isFirst)
+						$sql = $sql." AND ";
+					$sql = $sql."`nom` = $nom";
+					$isFirst = false;
+				}
+			}
+
+			if (isset($adresse)) {
+				if (is_string($adresse)) {
+					$adresse = GestionTicket::quote($adresse);
+					if ($isFirst)
+						$sql = $sql." AND ";
+					$sql = $sql."`adresse` = $adresse";
+					$isFirst = false;
+				}
+			}
+
+			if (isFirst) 
+				return null;
+
+			$rows = GestionTicket::fetchAll($sql);
+
+			$objects = array();
+
+			foreach ($rows as $row) {
+				array_push($objects, new Agence($row["id"], $row["nom"], $row["adresse"]));
+			}
+
+			return $objects;
 		}
 
 		public function id($val = null)

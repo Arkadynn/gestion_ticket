@@ -48,19 +48,23 @@
 			$isFirstArg = true;
 			$sql = "SELECT * FROM `Service` WHERE ";
 			if (isset($id)) {
-				$id = GestionTicket::quote($id);
-				$sql = $sql."`id` = '$id'";
-				$isFirstArg = false;
+				if (is_int($id) && $id > 0) {
+					$id = GestionTicket::quote($id);
+					$sql = $sql."`id` = '$id'";
+					$isFirstArg = false;
+				}
 			}
 
 			if (isset($nom)) {
-				$nom = GestionTicket::quote($nom);
-				if (!$isFirstArg) {
-					$sql = $sql." AND ";
-				}
+				if (is_string($nom)) {
+					$nom = GestionTicket::quote($nom);
+					if (!$isFirstArg) {
+						$sql = $sql." AND ";
+					}
 
-				$sql = $sql."`nom` = '$nom';";
-				$isFirstArg = false;
+					$sql = $sql."`nom` = '$nom';";
+					$isFirstArg = false;
+				}
 			}
 
 			if ($isFirstArg) 
@@ -72,12 +76,48 @@
 		}
 		
 		public static function searchWhere ($id = null, $nom = null, $idAgence = null) {
-			// TODO
+			$isFirstArg = true;
+			$sql = "SELECT * FROM `Service` WHERE ";
+			if (isset($id)) {
+				if (is_int($id) && $id > 0) {
+					$id = GestionTicket::quote($id);
+					$sql = $sql."`id` = '$id'";
+					$isFirstArg = false;
+				}
+			}
 
+			if (isset($nom)) {
+				if (is_string($nom)) {
+					$nom = GestionTicket::quote($nom);
+					if (!$isFirstArg) {
+						$sql = $sql." AND ";
+					}
 
+					$sql = $sql."`nom` = '$nom';";
+					$isFirstArg = false;
+				}
+			}
 
+			if (isset($idAgence)) {
+				if (is_int($idAgence) && $idAgence > 0) {
+					$idAgence = GestionTicket::quote($idAgence);
+					$sql = $sql."`idAgence` = '$idAgence'";
+					$isFirstArg = false;
+				}
+			}
 
+			if ($isFirstArg) 
+				return null;
 
+			$rows = GestionTicket::fetchAll($sql);
+
+			$objects = array();
+
+			foreach ($rows as $row) {
+				array_push($objects, new Agence($row["id"], $row["nom"], $row["idAgence"]));
+			}
+
+			return $objects;
 		}
 
 		public function getUsersFromService() {
