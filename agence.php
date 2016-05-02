@@ -47,13 +47,13 @@
 			$sql = "SELECT * FROM `Agence` WHERE ";
 
 			if (isset($id)) {
-				$id = $this->id();
+				$id = GestionTicket::quote($id);
 				$sql = $sql."`id` = $id";
 				$isFirst = false;
 			}
 
 			if (isset($nom)) {
-				$nom = $this->nom();
+				$nom = GestionTicket::quote($nom);
 				if ($isFirst)
 					$sql = $sql." AND ";
 				$sql = $sql."`nom` = $nom";
@@ -61,7 +61,7 @@
 			}
 
 			if (isset($adresse)) {
-				$adresse = $this->adresse();
+				$adresse = GestionTicket::quote($adresse);
 				if ($isFirst)
 					$sql = $sql." AND ";
 				$sql = $sql."`adresse` = $adresse";
@@ -71,8 +71,8 @@
 			if (isFirst) 
 				return null;
 
-			$rows = GestionTicket::fetchAll ($sql);
-			$row = $rows[0];
+			$row = GestionTicket::fetch($sql);
+			
 			return new Ticket ($row["id"], $row["nom"], $row["adresse"]);
 		}
 		

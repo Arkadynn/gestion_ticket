@@ -72,10 +72,11 @@
 		public static function getWhere ($id = null) {
 			$pdo = GestionTicket::$attr__connection;
 			if (isset($id)) {
-				$id = $this->id();
+				$id = GestionTicket::quote($id);
 				$sql = "SELECT * FROM `Ticket` WHERE `id` = $id;";
-				$rows = GestionTicket::fetchAll ($sql);
-				$row = $rows[0];
+
+				$row = GestionTicket::fetch($sql);
+
 				return new Ticket ($row["id"], $row["titre"], $row["objet"], $row["importance"], $row["etat"], $row["corps"], $row["tempsRef"], $row["idUser"]);
 			}
 		}

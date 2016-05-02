@@ -49,11 +49,13 @@
 		public static function getWhere ($debut = null, $idTicket = null) {
 			$pdo = GestionTicket::$attr__connection;
 			if (isset($debut) && isset($idTicket)) {
-				$debut = $this->attr__debut;
-				$idTicket = $this->attr__idTicket;
+				$debut = GestionTicket::quote($debut);
+				$idTicket = GestionTicket::quote($idTicket);
+
 				$sql = "SELECT * FROM `Duree` WHERE `debut` = $debut AND `idTicket` = $idTicket;";
-				$rows = GestionTicket::fetchAll ($sql);
-				$row = $rows[0];
+				
+				$row = GestionTicket::fetch($sql);
+				
 				return new Duree ($row["debut"], $row["fin"], $row["idTicket"]);
 			}
 		}

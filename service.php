@@ -48,13 +48,13 @@
 			$isFirstArg = true;
 			$sql = "SELECT * FROM `Service` WHERE ";
 			if (isset($id)) {
-				$id = $this->id();
+				$id = GestionTicket::quote($id);
 				$sql = $sql."`id` = '$id'";
 				$isFirstArg = false;
 			}
 
 			if (isset($nom)) {
-				$nom = $this->nom();
+				$nom = GestionTicket::quote($nom);
 				if (!$isFirstArg) {
 					$sql = $sql." AND ";
 				}
@@ -66,8 +66,7 @@
 			if ($isFirstArg) 
 				return null;
 
-			$rows = GestionTicket::fetchAll ($sql);
-			$row = $rows[0];
+			$rows = GestionTicket::fetch($sql);
 
 			return new Service ($row["id"], $row["nom"], $row["idAgence"]);
 		}

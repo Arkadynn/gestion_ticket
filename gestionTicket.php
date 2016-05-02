@@ -96,8 +96,20 @@
 
 		public static function fetchAll ($sql = null) {
 			if (isset($sql)) {
-
+				$statement = self::$attr__connection->prepare($sql);
+				$statement->execute();
+				return $statement->fetchAll();
 			}
+			return null;
+		}
+
+		public static function fetch ($sql = null) {
+			if (isset($sql)) {
+				$statement = self::$attr__connection->prepare($sql);
+				$statement->execute();
+				return $statement->fetch();
+			}
+			return null;
 		}
 	}
 ?>
