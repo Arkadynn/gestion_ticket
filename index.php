@@ -5,8 +5,7 @@
 <body>
 	<?php
 		echo "<p>All Good ?</p>";
-		require_once ("gestionTicket.php");
-		new GestionTicket ("localhost|root|root|gestion_ticket");
+		require_once ("tests.php");
 		echo "<p>Yup !</p>";
 	?>
 </body>

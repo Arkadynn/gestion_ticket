@@ -19,7 +19,7 @@
 			$this->attr__tempsPref = 0;
 			$this->attr__idUser = 0;
 
-			$this->id ($id);
+			$this->id($id);
 			$this->titre ($titre);
 			$this->objet ($objet);
 			$this->etat (self::ETAT_CREE);
@@ -30,28 +30,28 @@
 		}
 		
 		public function insert () {
-			$id = $this->id();
-			$titre = $this->titre();
-			$objet = $this->objet();
-			$etat = $this->etat();
-			$importance = $this->importance();
-			$corps = $this->corps();
-			$tempsPref = $this->tempsPref();
-			$idUser = $this->idUser();
+			$id = GestionTicket::quote($this->id());
+			$titre = GestionTicket::quote($this->titre());
+			$objet = GestionTicket::quote($this->objet());
+			$etat = GestionTicket::quote($this->etat());
+			$importance = GestionTicket::quote($this->importance());
+			$corps = GestionTicket::quote($this->corps());
+			$tempsPref = GestionTicket::quote($this->tempsPref());
+			$idUser = GestionTicket::quote($this->idUser());
 			$sql = "INSERT INTO `Ticket` (`id`, `titre`, `objet`, `etat`, `importance`, `corps`, `tempsPref`, `idUser`) 
-					VALUES ('$id', '$titre', '$objet', '$etat', '$importance', '$corps', '$tempsPref', '$idUser');";
+					VALUES ($id, $titre, $objet, $etat, $importance, $corps, $tempsPref, $idUser);";
 			GestionTicket::exec($sql);
 		}
 		
 		public function update () {
-			$id = $this->id();
-			$titre = $this->titre();
-			$objet = $this->objet();
-			$etat = $this->etat();
-			$importance = $this->importance();
-			$corps = $this->corps();
-			$tempsPref = $this->tempsPref();
-			$idUser = $this->idUser();
+			$id = GestionTicket::quote($this->id());
+			$titre = GestionTicket::quote($this->titre());
+			$objet = GestionTicket::quote($this->objet());
+			$etat = GestionTicket::quote($this->etat());
+			$importance = GestionTicket::quote($this->importance());
+			$corps = GestionTicket::quote($this->corps());
+			$tempsPref = GestionTicket::quote($this->tempsPref());
+			$idUser = GestionTicket::quote($this->idUser());
 			$sql = "UPDATE `Ticket` SET `titre`=$titre, `objet`=$objet, `etat`=$etat, `importance`=$importance, `corps`=$corps, `tempsPref`=$tempsPref, `idUser`=$idUser WHERE `id` = $id";
 			GestionTicket::exec($sql);
 		}
@@ -64,32 +64,31 @@
 			GestionTicket::exec($sql);
 		}
 		
-		public static function listAll () {
+		public static function ListAll () {
 			$sql = "SELECT * FROM `Ticket`;";
 			return GestionTicket::fetchAll ($sql);
 		}
 		
-		public static function getWhere ($id = null) {
-			$pdo = GestionTicket::$attr__connection;
+		public static function GetWhere ($id = null) {
 			if (isset($id)) {
-				if (is_int($id) && $id > 0) {
+				if (is_numeric($id) && $id > 0) {
 					$id = GestionTicket::quote($id);
 					$sql = "SELECT * FROM `Ticket` WHERE `id` = $id;";
 
 					$row = GestionTicket::fetch($sql);
-
-					return new Ticket ($row["id"], $row["titre"], $row["objet"], $row["importance"], $row["etat"], $row["corps"], $row["tempsRef"], $row["idUser"]);
+					$t = new Ticket ($row["id"], $row["titre"], $row["objet"], $row["importance"], $row["etat"], $row["corps"], $row["tempsRef"], $row["idUser"]);
+					return $t;
 				}
 			}
 			return null;
 		}
 		
-		public static function searchWhere ($id = null, $titre = null, $objet = null, $etat = null, $importance = null, $corps = null, $tempsPref = null, $idUser = null) {
+		public static function SearchWhere ($id = null, $titre = null, $objet = null, $etat = null, $importance = null, $corps = null, $tempsPref = null, $idUser = null) {
 			$isFirst = true;
 			$sql = "SELECT * FROM `Service` WHERE ";
 
 			if (isset($id)) {
-				if (is_int($id) && $id > 0) {
+				if (is_numeric($id) && $id > 0) {
 					$id = GestionTicket::quote($id);
 					$sql = $sql."`id` = $id";
 					$isFirst = false;
@@ -121,7 +120,7 @@
 			}
 
 			if (isset($etat)) {
-				if (is_int($etat) && $etat != self::ETAT_INVALIDE) {
+				if (is_numeric($etat) && $etat > self::ETAT_INVALIDE) {
 					$etat = GestionTicket::quote($etat);
 					if (!$isFirst) {
 						$sql = $sql." AND ";
@@ -133,7 +132,7 @@
 			}
 
 			if (isset($importance)) {
-				if (is_int($importance) && $importance > 0) {
+				if (is_numeric($importance) && $importance > 0) {
 					$importance = GestionTicket::quote($importance);
 					if (!$isFirst) {
 						$sql = $sql." AND ";
@@ -169,7 +168,7 @@
 			}
 
 			if (isset($idUser)) {
-				if (is_int($idUser) && $idUser > 0) {
+				if (is_numeric($idUser) && $idUser > 0) {
 					$idUser = GestionTicket::quote($idUser);
 					if (!$isFirst) {
 						$sql = $sql." AND ";
@@ -188,7 +187,7 @@
 			$objects = array();
 
 			foreach ($rows as $row) {
-				array_push($objects, new Agence($row["id"], $row["nom"], $row["idAgence"]));
+				array_push($objects, new Ticket ($row["id"], $row["titre"], $row["objet"], $row["importance"], $row["etat"], $row["corps"], $row["tempsRef"], $row["idUser"]));
 			}
 
 			return $objects;
@@ -197,7 +196,7 @@
 		public function getTicketsFromUser ($userID = null) {
 			$ans = null;
 			if (isset($userID)) {
-			if (is_int($userID)) {
+			if (is_numeric($userID)) {
 				if ($userID >= 0) 
 					$userID = GestionTicket::quote($userID);
 					$sql = "SELECT * FROM `Ticket` WHERE `id` IN (SELECT `id` FROM `Ticket` WHERE `idUser` = $userID";
@@ -208,10 +207,11 @@
 		}
 		
 		public function id ($val = null) {
-			if (isset ($val))
-			if (is_int ($val)) {
-				if ($val >= 0) {
-					$this->attr__id = GestionTicket::quote($val);
+			if (isset ($val)) {
+				if (is_numeric ($val)) {
+					if ($val > 0) {
+						$this->attr__id = $val;
+					}
 				}
 			}
 			return $this->attr__id;
@@ -220,7 +220,7 @@
 		public function titre ($val = null) {
 			if (isset ($val))
 			if (is_string ($val)) {
-				$this->attr__titre = GestionTicket::quote($val);
+				$this->attr__titre = $val;
 			}
 			return $this->attr__titre;
 		}
@@ -228,24 +228,24 @@
 		public function objet ($val = null) {
 			if (isset ($val))
 			if (is_string ($val)) {
-				$this->attr__objet = GestionTicket::quote($val);
+				$this->attr__objet = $val;
 			}
 			return $this->attr__objet;
 		}
 		
 		public function importance ($val = null) {
 			if (isset ($val))
-			if (is_int ($val)) {
-				$this->attr__importance = GestionTicket::quote($val);
+			if (is_numeric ($val)) {
+				$this->attr__importance = $val;
 			}
 			return $this->attr__importance;
 		}
 		
 		public function etat ($val = null) {
 			if (isset ($val))
-			if (is_int ($val)) {
+			if (is_numeric ($val)) {
 				if ($val >= 0 && $val <= 3) {
-					$this->attr__etat = GestionTicket::quote($val);
+					$this->attr__etat = $val;
 				}
 			}
 			return $this->attr__etat;
@@ -254,25 +254,25 @@
 		public function corps ($val = null) {
 			if (isset ($val))
 			if (is_string ($val)) {
-				$this->attr__corps = GestionTicket::quote($val);
+				$this->attr__corps = $val;
 			}
 			return $this->attr__corps;
 		}
 
 		public function tempsPref($val = null) {
 			if (isset($val))
-			if (is_int($val)) {
+			if (is_numeric($val)) {
 				if ($val > 0)
-					$this->attr__tempsPref = GestionTicket::quote($val);
+					$this->attr__tempsPref = $val;
 			}
 			return $this->attr__tempsPref;
 		}
 
 		public function idUser($val = null)	{
 			if (isset($val))
-			if (is_int($val)) {
+			if (is_numeric($val)) {
 				if ($val >= 0)
-					$this->attr__idUser = GestionTicket::quote($val);
+					$this->attr__idUser = $val;
 			}
 			return $this->attr__idUser;
 		}

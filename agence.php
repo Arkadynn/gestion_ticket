@@ -13,40 +13,40 @@
 		}
 		
 		public function insert () {
-			$id = $this->id();
-			$nom = $this->nom();
-			$adresse = $this->adresse();
+			$id = GestionTicket::quote($this->id());
+			$nom = GestionTicket::quote($this->nom());
+			$adresse = GestionTicket::quote($this->adresse());
 
 			$sql = "INSERT INTO `Agence` (`id`, `nom`, `adresse`) VALUES ($id, $nom, $adresse);";
 			return GestionTicket::exec ($sql);
 		}
 		
 		public function update () {
-			$id = $this->id();
-			$nom = $this->nom();
-			$adresse = $this->adresse();
+			$id = GestionTicket::quote($this->id());
+			$nom = GestionTicket::quote($this->nom());
+			$adresse = GestionTicket::quote($this->adresse());
 
 			$sql = "UPDATE `Agence` SET `nom`=$nom, `adresse`=$adresse WHERE `id`=$id;";
 			return GestionTicket::exec ($sql);
 		}
 		
 		public function delete () {
-			$id = $this->id();
+			$id = GestionTicket::quote($this->id());
 			$sql = "DELETE FROM `Agence` WHERE `id` = $id;";
 			return GestionTicket::exec ($sql);
 		}
 		
-		public static function listAll () {
+		public static function ListAll () {
 			$sql = "SELECT * FROM `Service`;";
-			// TODO
+			GestionTicket::exec($sql);
 		}
 		
-		public static function getWhere ($id = null, $nom = null, $adresse = null) {
+		public static function GetWhere ($id = null, $nom = null, $adresse = null) {
 			$isFirst = true;
 			$sql = "SELECT * FROM `Agence` WHERE ";
 
 			if (isset($id)) {
-				if (is_int($id) && $id > 0) {
+				if (is_numeric($id) && $id > 0) {
 					$id = GestionTicket::quote($id);
 					$sql = $sql."`id` = $id";
 					$isFirst = false;
@@ -63,20 +63,21 @@
 				}
 			}
 
-			if (isFirst) 
+			if ($isFirst) 
 				return null;
 
 			$row = GestionTicket::fetch($sql);
 
-			return new Ticket ($row["id"], $row["nom"], $row["adresse"]);
+			$a =  new Agence ($row["id"], $row["nom"], $row["adresse"]);
+			return $a;
 		}
 		
-		public static function searchWhere ($id = null, $nom = null, $adresse = null) {
+		public static function SearchWhere ($id = null, $nom = null, $adresse = null) {
 			$isFirst = true;
 			$sql = "SELECT * FROM `Agence` WHERE ";
 
 			if (isset($id)) {
-				if (is_int($id) && $id > 0) {
+				if (is_numeric($id) && $id > 0) {
 					$id = GestionTicket::quote($id);
 					$sql = $sql."`id` = $id";
 					$isFirst = false;
@@ -120,9 +121,9 @@
 		public function id($val = null)
 		{
 			if (isset($val)) {
-				if (is_int($val)) {
+				if (is_numeric($val)) {
 					if ($val > 0) {
-						$this->attr__id = GestionTicket::quote($val);
+						$this->attr__id = $val;
 					}
 				}
 			}
@@ -133,7 +134,7 @@
 		{
 			if (isset($val)) {
 				if (is_string($val)) {
-					$this->attr__nom = GestionTicket::quote($val);
+					$this->attr__nom = $val;
 				}
 			}
 			return $this->attr__nom;
@@ -143,7 +144,7 @@
 		{
 			if (isset($val)) {
 				if (is_string($val)) {
-					$this->attr__adresse = GestionTicket::quote($val);
+					$this->attr__adresse = $val;
 				}
 			}
 			return $this->attr__adresse;

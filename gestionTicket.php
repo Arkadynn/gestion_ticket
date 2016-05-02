@@ -74,8 +74,6 @@
 					   		FOREIGN KEY (`idTicket`) REFERENCES `Ticket`(`id`)
 					   );";
 				$conn->exec ($sql);
-			} else {
-				echo "Deja connecte"."</br>";
 			}
 		}
 
@@ -88,7 +86,6 @@
 
 		public static function exec($sql = null) {
 			if (isset($sql)) {
-				echo $sql."</br>";
 				return self::$attr__connection->exec($sql);
 			}
 			return -1;
