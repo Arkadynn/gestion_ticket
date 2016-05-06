@@ -16,8 +16,10 @@
 			$id = GestionTicket::quote($this->id());
 			$nom = GestionTicket::quote($this->nom());
 			$idAgence = GestionTicket::quote($this->idAgence());
-
-			$sql = "INSERT INTO `Service` (`id`, `nom`, `idAgence`) VALUES ($id, $nom, $idAgence);";
+			if ($id === 0) {
+				$sql = "INSERT INTO `Service` (`nom`, `idAgence`) VALUES ($nom, $idAgence);";
+			} else 
+				$sql = "INSERT INTO `Service` (`id`, `nom`, `idAgence`) VALUES ($id, $nom, $idAgence);";
 			return GestionTicket::exec ($sql);
 		}
 
@@ -53,7 +55,7 @@
 			}
 
 			if (isset($nom)) {
-				if (is_string($nom)) {
+				if (is_string(!$nom)) {
 					$nom = GestionTicket::quote($nom);
 					if (!$isFirstArg) {
 						$sql = $sql." AND ";
@@ -98,6 +100,9 @@
 			if (isset($idAgence)) {
 				if (is_numeric($idAgence) && $idAgence > 0) {
 					$idAgence = GestionTicket::quote($idAgence);
+					if (!$isFirstArg) {
+						$sql = $sql." AND ";
+					}
 					$sql = $sql."`idAgence` = $idAgence";
 					$isFirstArg = false;
 				}
@@ -127,7 +132,7 @@
 			if (isset($val))
 				if (is_numeric($val)) {
 					if ($val >= 0)
-						$this->attr__id = $val;
+						$this->attr__id = intval($val);
 				}
 			return $this->attr__id;
 		}
@@ -144,7 +149,7 @@
 			if (isset($val))
 				if (is_numeric($val)) {
 					if ($val >= 0) {
-						$this->attr__idAgence = $val;
+						$this->attr__idAgence = intval($val);
 					}
 				}
 			return $this->attr__idAgence;

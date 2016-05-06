@@ -17,7 +17,10 @@
 			$nom = GestionTicket::quote($this->nom());
 			$adresse = GestionTicket::quote($this->adresse());
 
-			$sql = "INSERT INTO `Agence` (`id`, `nom`, `adresse`) VALUES ($id, $nom, $adresse);";
+			if ($id === 0) {
+				$sql = "INSERT INTO `Agence` (`nom`, `adresse`) VALUES ($nom, $adresse);";
+			} else 
+				$sql = "INSERT INTO `Agence` (`id`, `nom`, `adresse`) VALUES ($id, $nom, $adresse);";
 			return GestionTicket::exec ($sql);
 		}
 		
@@ -41,7 +44,7 @@
 			GestionTicket::exec($sql);
 		}
 		
-		public static function GetWhere ($id = null, $nom = null, $adresse = null) {
+		public static function GetWhere ($id = null, $nom = null) {
 			$isFirst = true;
 			$sql = "SELECT * FROM `Agence` WHERE ";
 
@@ -56,7 +59,7 @@
 			if (isset($nom)) {
 				if (is_string($nom)) {
 					$nom = GestionTicket::quote($nom);
-					if ($isFirst)
+					if (!$isFirst)
 						$sql = $sql." AND ";
 					$sql = $sql."`nom` = $nom";
 					$isFirst = false;
@@ -87,7 +90,7 @@
 			if (isset($nom)) {
 				if (is_string($nom)) {
 					$nom = GestionTicket::quote($nom);
-					if ($isFirst)
+					if (!$isFirst)
 						$sql = $sql." AND ";
 					$sql = $sql."`nom` = $nom";
 					$isFirst = false;
@@ -97,14 +100,14 @@
 			if (isset($adresse)) {
 				if (is_string($adresse)) {
 					$adresse = GestionTicket::quote($adresse);
-					if ($isFirst)
+					if (!$isFirst)
 						$sql = $sql." AND ";
 					$sql = $sql."`adresse` = $adresse";
 					$isFirst = false;
 				}
 			}
 
-			if (isFirst) 
+			if ($isFirst) 
 				return null;
 
 			$rows = GestionTicket::fetchAll($sql);
@@ -118,20 +121,18 @@
 			return $objects;
 		}
 
-		public function id($val = null)
-		{
+		public function id($val = null) {
 			if (isset($val)) {
 				if (is_numeric($val)) {
 					if ($val > 0) {
-						$this->attr__id = $val;
+						$this->attr__id = intval($val);
 					}
 				}
 			}
 			return $this->attr__id;
 		}
 
-		public function nom ($val = null)
-		{
+		public function nom ($val = null) {
 			if (isset($val)) {
 				if (is_string($val)) {
 					$this->attr__nom = $val;
@@ -140,8 +141,7 @@
 			return $this->attr__nom;
 		}
 
-		public function adresse ($val = null)
-		{
+		public function adresse ($val = null) {
 			if (isset($val)) {
 				if (is_string($val)) {
 					$this->attr__adresse = $val;

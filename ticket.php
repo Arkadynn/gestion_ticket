@@ -38,8 +38,15 @@
 			$corps = GestionTicket::quote($this->corps());
 			$tempsPref = GestionTicket::quote($this->tempsPref());
 			$idUser = GestionTicket::quote($this->idUser());
-			$sql = "INSERT INTO `Ticket` (`id`, `titre`, `objet`, `etat`, `importance`, `corps`, `tempsPref`, `idUser`) 
-					VALUES ($id, $titre, $objet, $etat, $importance, $corps, $tempsPref, $idUser);";
+
+			if ($id === 0) {
+				$sql = "INSERT INTO `Ticket` (`titre`, `objet`, `etat`, `importance`, `corps`, `tempsPref`, `idUser`) 
+						VALUES ($titre, $objet, $etat, $importance, $corps, $tempsPref, $idUser);";
+			} else {
+				$sql = "INSERT INTO `Ticket` (`id`, `titre`, `objet`, `etat`, `importance`, `corps`, `tempsPref`, `idUser`) 
+						VALUES ($id, $titre, $objet, $etat, $importance, $corps, $tempsPref, $idUser);";
+			}
+			
 			GestionTicket::exec($sql);
 		}
 		
@@ -84,14 +91,12 @@
 		}
 		
 		public static function SearchWhere ($id = null, $titre = null, $objet = null, $etat = null, $importance = null, $corps = null, $tempsPref = null, $idUser = null) {
-			$isFirst = true;
 			$sql = "SELECT * FROM `Service` WHERE ";
 
 			if (isset($id)) {
 				if (is_numeric($id) && $id > 0) {
 					$id = GestionTicket::quote($id);
 					$sql = $sql."`id` = $id";
-					$isFirst = false;
 				}
 			}
 
@@ -210,7 +215,7 @@
 			if (isset ($val)) {
 				if (is_numeric ($val)) {
 					if ($val > 0) {
-						$this->attr__id = $val;
+						$this->attr__id = intval($val);
 					}
 				}
 			}
@@ -272,7 +277,7 @@
 			if (isset($val))
 			if (is_numeric($val)) {
 				if ($val >= 0)
-					$this->attr__idUser = $val;
+					$this->attr__idUser = intval($val);
 			}
 			return $this->attr__idUser;
 		}

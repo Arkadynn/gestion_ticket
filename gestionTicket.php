@@ -36,7 +36,7 @@
 
 				$sql = "CREATE TABLE IF NOT EXISTS `Agence` (
 							`id` INT(11) PRIMARY KEY AUTO_INCREMENT,
-							`nom` VARCHAR(50) NOT NULL,
+							`nom` VARCHAR(50) NOT NULL UNIQUE,
 							`adresse` VARCHAR(100) NOT NULL
 						);";
 				$conn->exec ($sql);
@@ -81,7 +81,7 @@
 			if (isset($attr)) {
 				return self::$attr__connection->quote ($attr);
 			}
-			return null;
+			return 'NULL';
 		}
 
 		public static function exec($sql = null) {

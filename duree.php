@@ -8,7 +8,7 @@
 
 			$this->debut ($debut);
 			$this->fin ($fin);
-			$this->id ($idTicket);
+			$this->idTicket ($idTicket);
 		}
 		
 		public function insert () {
@@ -71,7 +71,7 @@
 			if (isset($fin)) {
 				if (is_string($fin)) {
 					$fin = GestionTicket::quote($fin);
-					if ($isFirst)
+					if (!$isFirst)
 						$sql = $sql." AND";
 					$sql = $sql." `fin` = $fin";
 					$isFirst = false;
@@ -81,7 +81,7 @@
 			if (isset($idTicket)) {
 				if (is_numeric($idTicket) && $idTicket > 0) {
 					$idTicket = GestionTicket::quote($idTicket);
-					if ($isFirst)
+					if (!$isFirst)
 						$sql = $sql." AND";
 					$sql = $sql." `idTicket` = $idTicket";
 					$isFirst = false;
@@ -112,11 +112,11 @@
 			return $this->attr__fin;
 		}
 
-		public function id ($val = null) {
+		public function idTicket ($val = null) {
 			if (isset($val))
 				if (is_numeric($val)) {
 					if ($val >= 0) {
-						$this->attr__idTicket = $val;
+						$this->attr__idTicket = intval($val);
 					}
 				}
 			return $this->attr__idTicket;
