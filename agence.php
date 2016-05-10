@@ -40,7 +40,7 @@
 		}
 		
 		public static function ListAll () {
-			$sql = "SELECT * FROM `Service`;";
+			$sql = "SELECT * FROM `Agence`;";
 			GestionTicket::exec($sql);
 		}
 		
