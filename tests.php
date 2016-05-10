@@ -13,7 +13,7 @@
 				echo "Done !</p>";
 
 				echo "<p>Connecting to Database ...";
-					new GestionTicket("localhost|root|root|gestion_ticket");
+					new GestionTicket("localhost|root|root|gestion_ticket", true);
 				echo "Done !</p>";
 			}
 

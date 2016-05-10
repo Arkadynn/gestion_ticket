@@ -16,7 +16,7 @@
 		 *	 - Creation de le base de donnees si necessaire
 		 *	 - Connexion a la base de donnees
 		*/
-		public function GestionTicket($dbi)	{
+		public function GestionTicket($dbi, $testing = false)	{
 
 			if (!isset(self::$attr__connection)) {
 
@@ -24,6 +24,9 @@
 
 				// Connect to mysql server
 				self::$attr__connection = new PDO("mysql:host=$host;", $user, $password);
+
+				if ($testing)
+					self::$attr__connection->exec("DROP DATABASE $dbname");
 
 				// create database in case it do not exists
 				$sql = "CREATE DATABASE IF NOT EXISTS `$dbname`;";
@@ -77,6 +80,9 @@
 			}
 		}
 
+		/*
+		 *	
+		*/
 		public static function quote($attr = null) {
 			if (isset($attr)) {
 				return self::$attr__connection->quote ($attr);
