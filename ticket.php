@@ -73,7 +73,15 @@
 		
 		public static function ListAll () {
 			$sql = "SELECT * FROM `Ticket`;";
-			return GestionTicket::fetchAll ($sql);
+			$rows = GestionTicket::fetchAll($sql);
+
+			$objects = array();
+
+			foreach ($rows as $row) {
+				array_push($objects, new Ticket ($row["id"], $row["titre"], $row["objet"], $row["importance"], $row["etat"], $row["corps"], $row["tempsRef"], $row["idUser"]));
+			}
+
+			return $objects;
 		}
 		
 		public static function GetWhere ($id = null) {

@@ -10,11 +10,15 @@
 		}
 
 		public function insert () {
-			if (isset($id)) {
+
+			if ($this->id > 0) {
+				$id = GestionTicket::quote($this->id);
 				GestionTicket::exec("INSERT INTO `Utilisateur` (`id`) VALUES ($id);");
 			} else {
-				GestionTicket::exec("INSERT INTO `Utilisateur` (`id`) VALUES ($id);");
+				GestionTicket::exec("INSERT INTO `Utilisateur` (`id`) VALUES ('1');");
 			}
+			echo $sql;
+			return GestionTicket::exec($sql);
 		}
 
 		public function id($val = null) {

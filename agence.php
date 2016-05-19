@@ -41,7 +41,15 @@
 		
 		public static function ListAll () {
 			$sql = "SELECT * FROM `Agence`;";
-			GestionTicket::exec($sql);
+			$rows = GestionTicket::fetchAll($sql);
+
+			$objects = array();
+
+			foreach ($rows as $row) {
+				array_push($objects, new Agence($row["id"], $row["nom"], $row["adresse"]));
+			}
+
+			return $objects;
 		}
 		
 		public static function GetWhere ($id = null, $nom = null) {

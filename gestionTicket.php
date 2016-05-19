@@ -52,7 +52,7 @@
 						);";
 				$conn->exec ($sql);
 
-				$sql = "CREATE TABLE IF NOT EXISTS `Utilisateur` (id INT(11) PRIMARY KEY AUTO_INCREMENT);";
+				$sql = "CREATE TABLE IF NOT EXISTS `Utilisateur` (`id` INT(11) PRIMARY KEY AUTO_INCREMENT);";
 				$conn->exec ($sql);
 
 				$sql = "CREATE TABLE IF NOT EXISTS `Ticket` (
