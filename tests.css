@@ -1,0 +1,22 @@
+.debug {
+    color: white;
+    background-color: black;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 20px;
+}
+.warning {
+    color: orange;
+}
+.OK {
+    color: lime;
+    font-weight: bold;
+}
+.KO {
+    color: red;
+    font-weight: bold;
+}
+.infos {
+    color: blue;
+    font-style: italic;
+}

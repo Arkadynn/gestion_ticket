@@ -8,7 +8,7 @@
 		const ETAT_A_VALIDER = 2;
 		const ETAT_CLOTURE = 3;
 		
-		public function Ticket ($id = 0, $titre = "", $objet = "", $importance = 0, $corps = "", $tempsPref = 0, $idUser = 0) {
+		public function Ticket ($id = 0, $titre = "", $objet = "", $importance = 0, $corps = "", $tempsPref = 0, $idUser = 0, $etat = self::ETAT_INVALIDE) {
 
 			$this->attr__id = 0;
 			$this->attr__titre = "";
@@ -46,8 +46,8 @@
 				$sql = "INSERT INTO `Ticket` (`id`, `titre`, `objet`, `etat`, `importance`, `corps`, `tempsPref`, `idUser`) 
 						VALUES ($id, $titre, $objet, $etat, $importance, $corps, $tempsPref, $idUser);";
 			}
-			
-			GestionTicket::exec($sql);
+
+			return GestionTicket::exec($sql);
 		}
 		
 		public function update () {
@@ -99,12 +99,14 @@
 		}
 		
 		public static function SearchWhere ($id = null, $titre = null, $objet = null, $etat = null, $importance = null, $corps = null, $tempsPref = null, $idUser = null) {
-			$sql = "SELECT * FROM `Service` WHERE ";
+			$isFirst = true;
+			$sql = "SELECT * FROM `Ticket` WHERE ";
 
 			if (isset($id)) {
 				if (is_numeric($id) && $id > 0) {
 					$id = GestionTicket::quote($id);
 					$sql = $sql."`id` = $id";
+					$isFirst = false;
 				}
 			}
 
@@ -145,7 +147,7 @@
 			}
 
 			if (isset($importance)) {
-				if (is_numeric($importance) && $importance > 0) {
+				if (is_numeric($importance)) {
 					$importance = GestionTicket::quote($importance);
 					if (!$isFirst) {
 						$sql = $sql." AND ";
@@ -169,7 +171,7 @@
 			}
 
 			if (isset($tempsPref)) {
-				if (is_string($tempsPref)) {
+				if (is_numeric($tempsPref)) {
 					$tempsPref = GestionTicket::quote($tempsPref);
 					if (!$isFirst) {
 						$sql = $sql." AND ";
@@ -195,12 +197,14 @@
 			if ($isFirst) 
 				return null;
 
+			echo $sql;
+
 			$rows = GestionTicket::fetchAll($sql);
 
 			$objects = array();
 
 			foreach ($rows as $row) {
-				array_push($objects, new Ticket ($row["id"], $row["titre"], $row["objet"], $row["importance"], $row["etat"], $row["corps"], $row["tempsRef"], $row["idUser"]));
+				array_push($objects, new Ticket ($row["id"], $row["titre"], $row["objet"], $row["importance"], $row["corps"], $row["tempsPref"], $row["idUser"], $row["etat"]));
 			}
 
 			return $objects;
@@ -249,7 +253,7 @@
 		public function importance ($val = null) {
 			if (isset ($val))
 			if (is_numeric ($val)) {
-				$this->attr__importance = $val;
+				$this->attr__importance = intval($val);
 			}
 			return $this->attr__importance;
 		}
@@ -258,7 +262,7 @@
 			if (isset ($val))
 			if (is_numeric ($val)) {
 				if ($val >= 0 && $val <= 3) {
-					$this->attr__etat = $val;
+					$this->attr__etat = intval($val);
 				}
 			}
 			return $this->attr__etat;
@@ -276,7 +280,7 @@
 			if (isset($val))
 			if (is_numeric($val)) {
 				if ($val > 0)
-					$this->attr__tempsPref = $val;
+					$this->attr__tempsPref = intval($val);
 			}
 			return $this->attr__tempsPref;
 		}

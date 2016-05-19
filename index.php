@@ -4,7 +4,7 @@
 </head>
 <body>
 	<?php
-		require_once("tests.php");
+		
 	?>
 </body>
 </html>

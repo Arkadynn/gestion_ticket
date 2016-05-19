@@ -3,8 +3,8 @@
 	<link rel="stylesheet" href="tests.css" />
 </head>
 <body>
-	<div class="debug" style="font-family: Consolas">
-		<h1>Test Begin</h1>
+	<div class="debug">
+		<h1 class="infos">Test Begin</h1>
 
 		<?php
 			$tests = new Tests();
@@ -16,18 +16,15 @@
 			$tests->test_duree();
 
 			class Tests {
-				public function Tests() {
-					echo "<p class='Warning'>Database should'nt exists for the test to be exhaustive</p>";
-				}
 
 				public function test_database() {
-					echo "<p>including module : Gestion Ticket ...<br/>";
+					echo "<p>including module : Gestion Ticket ... ";
 						require_once("gestionTicket.php");
-					echo "Done !</p>";
+					echo "<span class='OK'>Done !</span></p>";
 
-					echo "<p>Connecting to Database ...";
+					echo "<p>Connecting to Database ... ";
 						new GestionTicket("localhost|root|perdu.42|freyssinet_gestion_ticket", true);
-					echo "Done !</p>";
+					echo "<span class='OK'>Done !</span></p>";
 				}
 
 				public function test_agence() {
@@ -35,21 +32,21 @@
 					{ // Object Creation
 						echo "Creating a default Agence Object : new Agence ()</br>"; 
 						$a = new Agence ();
-						echo "seting id to 1 : ";
+						echo "setting id to 1 : ";
 							$ans = $a->id(1);
 						if ($ans === 1)
 							echo "<span class='OK'>OK</span></br>";
 						else
 							echo "<span class='KO'>Failed</span></br>";
 
-						echo "seting name to 'Freyssinet aerospace' : ";
+						echo "setting name to 'Freyssinet aerospace' : ";
 							$ans = $a->nom("Freyssinet aerospace");
 						if ($ans === "Freyssinet aerospace")
 							echo "<span class='OK'>OK</span></br>";
 						else
 							echo "<span class='KO'>Failed</span></br>";
 
-						echo "seting adresse to 'TOULOUSE' : ";
+						echo "setting adresse to 'TOULOUSE' : ";
 							$ans = $a->adresse("TOULOUSE");
 						if ($ans === "TOULOUSE")
 							echo "<span class='OK'>OK</span></br>";
@@ -152,21 +149,21 @@
 					{ // Object Creation
 						echo "Creating a default Service Object : new Service ()</br>"; 
 						$a = new Service ();
-						echo "seting id to 1 : ";
+						echo "setting id to 1 : ";
 							$ans = $a->id(1);
 						if ($ans === 1)
 							echo "<span class='OK'>OK</span></br>";
 						else
 							echo "<span class='KO'>Failed</span></br>";
 
-						echo "seting name to Methode : ";
+						echo "setting name to Methode : ";
 							$ans = $a->nom("Methode");
 						if ($ans === "Methode")
 							echo "<span class='OK'>OK</span></br>";
 						else
 							echo "<span class='KO'>Failed</span></br>";
 
-						echo "seting idAgence to 1: ";
+						echo "setting idAgence to 1: ";
 							$ans = $a->idAgence(1);
 						if ($ans === 1)
 							echo "<span class='OK'>OK</span></br>";
@@ -264,13 +261,188 @@
 				}
 
 				public function test_utilisateur() {
+					$a = null;
+					echo "<p><h4 class='Infos'>Testing utilisteur.php ...</h4>";
+					echo "<span class ='KO'>Error : Utilisateur file still not integrated</span>";
+					echo "<h4 class='Infos'>Done!</h4></p>";
 					$a = new Utilisateur (1);
 					$a->insert();
 				}
 
 				public function test_ticket() {
-					$a = new Ticket(1, "titre", "objet", 1, "corps", 0, 1);
+					$a = null;
+					echo "<p><h4 class='Infos'>Testing ticket.php ...</h4>";
+					{ // Object Creation
+						echo "Creating a default Ticket Object : new Ticket ()</br>"; 
+						$a = new Ticket ();
+
+						echo "setting id to 1 : ";
+							$ans = $a->id(1);
+						if ($ans === 1)
+							echo "<span class='OK'>OK</span></br>";
+						else
+							echo "<span class='KO'>Failed</span></br>";
+
+						echo "setting titre to 'titre' : ";
+							$ans = $a->titre("titre");
+						if ($ans === "titre")
+							echo "<span class='OK'>OK</span></br>";
+						else
+							echo "<span class='KO'>Failed</span></br>";
+
+						echo "setting objet to 'objet' : ";
+							$ans = $a->objet("objet");
+						if ($ans === "objet")
+							echo "<span class='OK'>OK</span></br>";
+						else
+							echo "<span class='KO'>Failed</span></br>";
+
+						echo "setting importance to 3 : ";
+							$ans = $a->importance(3);
+						if ($ans === 3)
+							echo "<span class='OK'>OK</span></br>";
+						else
+							echo "<span class='KO'>Failed</span></br>";
+
+						echo "setting corps to 'corps' : ";
+							$ans = $a->corps("corps");
+						if ($ans === "corps")
+							echo "<span class='OK'>OK</span></br>";
+						else
+							echo "<span class='KO'>Failed</span></br>";
+
+						echo "setting tempsPref to 20 : ";
+							$ans = $a->tempsPref(20);
+						if ($ans === 20)
+							echo "<span class='OK'>OK</span></br>";
+						else
+							echo "<span class='KO'>Failed</span></br>";
+
+						echo "setting idUser to 1 : ";
+							$ans = $a->idUser(1);
+						if ($ans === 1)
+							echo "<span class='OK'>OK</span></br>";
+						else
+							echo "<span class='KO'>Failed</span></br>";
+					}
+
+					{ // INSERT
+						//*
+						echo "inserting into database (should work) : ";
+							$ans = $a->insert();
+						if ($ans === 1)
+							echo "<span class='OK'>OK</span></br>";
+						else
+							echo "<span class='KO'>Failed</span></br>";
+
+						echo "inserting it again (should'nt work) : ";
+							$ans = $a->insert();
+						if ($ans === 1)
+							echo "<span class='KO'>OK</span></br>";
+						else
+							echo "<span class='OK'>Failed</span></br>";
+						//*/
+					}
+
+					{ // GetWhere
+						echo "Retrieving database entry from id using GetWhere method : ";
+							$ans = Ticket::GetWhere ($a->id());
+						if ($ans->id() === $a->id())
+							echo "<span class='OK'>OK</span></br>";
+						else
+							echo "<span class='KO'>Failed : id = ".$ans->id()." and not ".$a->id()."</span></br>";
+					}
+
+					{ // UPDATE
+						echo "updating Ticket object 'titre' from titre to title : ";
+							$a->titre("title");
+							$a->update();
+							$ans = Ticket::GetWhere ($a->id());
+						if ($ans->titre() === "title")
+							echo "<span class='OK'>OK</span><br />";
+						else
+							echo "<span class='KO'>Failed : ".($ans->nom())."</span><br />";
+					}
+
+					{ // SearchWhere
+						echo "Retrieving database entry from id using SearchWhere method : ";
+							$ans = Ticket::SearchWhere ($a->id());
+						if (count($ans) === 1 && $ans[0]->id() === $a->id())
+							echo "<span class='OK'>OK</span></br>";
+						else
+							echo "<span class='KO'>Failed</span></br>";
+
+						echo "Retrieving database entry from titre using SearchWhere method : ";
+							$ans = Ticket::SearchWhere (null, $a->titre());
+						if (count($ans) === 1 && $ans[0]->titre() === $a->titre())
+							echo "<span class='OK'>OK</span></br>";
+						else
+							echo "<span class='KO'>Failed</span></br>";
+						
+						echo "Retrieving database entry from objet using SearchWhere method : ";
+							$ans = Ticket::SearchWhere (null, null, $a->objet());
+						if (count($ans) === 1 && $ans[0]->objet() === $a->objet())
+							echo "<span class='OK'>OK</span></br>";
+						else
+							echo "<span class='KO'>Failed</span></br>";
+						
+						echo "Retrieving database entry from etat using SearchWhere method : ";
+							$ans = Ticket::SearchWhere (null, null, null, $a->etat());
+						if (count($ans) === 1 && $ans[0]->etat() === $a->etat())
+							echo "<span class='OK'>OK</span></br>";
+						else
+							echo "<span class='KO'>Failed</span></br>";
+						
+						echo "Retrieving database entry from importance using SearchWhere method : ";
+							$ans = Ticket::SearchWhere (null, null, null, null, $a->importance());
+						if (count($ans) === 1 && $ans[0]->importance() === $a->importance())
+							echo "<span class='OK'>OK</span></br>";
+						else
+							echo "<span class='KO'>Failed</span></br>";
+						
+						echo "Retrieving database entry from corps using SearchWhere method : ";
+							$ans = Ticket::SearchWhere (null, null, null, null, null, $a->corps());
+						if (count($ans) === 1 && $ans[0]->corps() === $a->corps())
+							echo "<span class='OK'>OK</span></br>";
+						else
+							echo "<span class='KO'>Failed</span></br>";
+						
+						echo "Retrieving database entry from tempsPref using SearchWhere method : ";
+							$ans = Ticket::SearchWhere (null, null, null, null, null, null, $a->tempsPref());
+						if (count($ans) === 1 && $ans[0]->tempsPref() === $a->tempsPref())
+							echo "<span class='OK'>OK</span></br>";
+						else
+							echo "<span class='KO'>Failed</span></br>";
+						
+						echo "Retrieving database entry from idUser using SearchWhere method : ";
+							$ans = Ticket::SearchWhere (null, null, null, null, null, null, null, $a->idUser());
+						if (count($ans) === 1 && $ans[0]->idUser() === $a->idUser())
+							echo "<span class='OK'>OK</span></br>";
+						else
+							echo "<span class='KO'>Failed</span></br>";
+					}
+
+					{ // ListAll
+						echo "counting members of table Ticket should be 1 : ";
+							$ans = Ticket::ListAll();
+						if ((count($ans)) === 1)
+							echo "<span class='OK'>OK</span></br>";
+						else
+							echo "<span class='KO'>Failed</span></br>";
+					}
+
+					{ // DELETE
+						echo "deleting object from Ticket : ";
+						$a->delete();
+						$ans = Ticket::ListAll();
+						if ((count($ans)) === 0)
+							echo "<span class='OK'>OK</span></br>";
+						else
+							echo "<span class='KO'>Failed</span></br>";
+					}
+
 					$a->insert();
+					echo "<h4 class='Infos'>Done !</h4></p>";
 				}
 
 				public function test_duree() {
@@ -279,21 +451,21 @@
 					{ // Object Creation
 						echo "Creating a default Duree Object : new Duree ()</br>"; 
 						$a = new Duree ();
-						echo "seting debut to 2016-05-17 : ";
+						echo "setting debut to 2016-05-17 : ";
 							$ans = $a->debut(new DateTime("2016-05-17"));
 						if ($ans->format("Y-m-d") === "2016-05-17")
 							echo "<span class='OK'>OK</span></br>";
 						else
 							echo "<span class='KO'>Failed</span></br>";
 
-						echo "seting fin to 2016-05-18 : ";
+						echo "setting fin to 2016-05-18 : ";
 							$ans = $a->fin(new DateTime("2016-05-18"));
 						if ($ans->format("Y-m-d") === "2016-05-18")
 							echo "<span class='OK'>OK</span></br>";
 						else
 							echo "<span class='KO'>Failed</span></br>";
 
-						echo "seting idTicket to 1: ";
+						echo "setting idTicket to 1: ";
 							$ans = $a->idTicket(1);
 						if ($ans === 1)
 							echo "<span class='OK'>OK</span></br>";
@@ -386,7 +558,7 @@
 
 		?>
 
-		<h1>Test End</h1>
+		<h1 class="infos">Test End</h1>
 	</div>
 </body>
 </html>
