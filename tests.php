@@ -23,7 +23,7 @@
 					echo "<span class='OK'>Done !</span></p>";
 
 					echo "<p>Connecting to Database ... ";
-						new GestionTicket("localhost|root|perdu.42|freyssinet_gestion_ticket", true);
+						new GestionTicket("localhost|root|perdu.42|test_gestion_ticket", true);
 					echo "<span class='OK'>Done !</span></p>";
 				}
 

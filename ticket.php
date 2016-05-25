@@ -222,6 +222,15 @@
 			}
 			return $ans;
 		}
+
+		public function getAuthor () {
+			$idUser = $this->idUser();
+			if ($idUser > 0) {
+				$user = Utilisateur::GetWhere ($idUser);
+				return $user;
+			}
+			return null;
+		}
 		
 		public function id ($val = null) {
 			if (isset ($val)) {
